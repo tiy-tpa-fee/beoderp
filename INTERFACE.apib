@@ -1,0 +1,124 @@
+FORMAT: 1A
+HOST: https://beoderp.herokuapp.com
+
+# BEODerp
+
+BEODerp is a "back end on demand". It's simple API allows consumers to save, retrieve and update data as needed. 
+
+**FOR PROTOTYPE USE ONLY**
+
+Don't use this with production applications, as the design is fundamentally insecure.
+
+## Authentication
+
+*BEODerp* uses token authentication. Your token can be any text you wish. As long as you use the same token between requests, you'll have access to the same set of data.
+
+Your token can be provided either as a bearer token in an HTTP header:
+
+    Authorization: Bearer <TOKEN>
+
+Or as a query string parameter in your URL:
+
+    ?access_token=<TOKEN>
+
+# Group Objects
+
+The `resource_name` you provide for all end-points is chosen by you. Posting data to a URL will create objects with that resource name, that you can fetch or update later. The example `"items"` is used in this documenation, but almost any reasonable name should work.
+
+## Object Collections [/{resource_name}{?access_token}]
+
++ Attributes (array[Object])
+
++ Parameters
+
+    + resource_name: items (string) - The name of the collection of resources you are working with.
+    + access_token: illustriousvoyage (string) - Your unique access token
+
+### List Objects [GET]
+
++ Response 200 (application/json)
+
+            [
+              {
+                "id": 1,
+                "text": "Learn HTML & CSS",
+                "complete": true
+              },
+              {
+                "id": 2,
+                "text": "Master React",
+                "complete": false
+              }
+            ]
+
+### Create a New Object [POST]
+
+You may create new objects using this action. It takes a JSON structure containing the singular resource name data you want to save.
+
++ Request (application/json)
+
+            {
+              "text": "Learn about Regular Expressions"
+            }
+
++ Response 201 (application/json)
+
+    + Headers
+    
+            Location: /items/3
+
+    + Body
+
+            {
+              "id": 3,
+              "text": "Learn about Regular Expressions",
+              "complete": false
+            }
+
+## Singular Object [/{resource_name}/{id}{?access_token}]
+
++ Attributes (Object)
+
++ Parameters
+
+    + resource_name: items (string) - The name of the collection of resources you are working with.
+    + id: 1 (number) - The unique identifier of the item
+
+### Retrieve an Object [GET]
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Attributes (Object)
+    + Body
+
+            {
+              "id": 1,
+              "text": "Learn HTML & CSS",
+              "complete": true
+            }
+
+### Update an Object [PUT]
+
+Update some or all of the parts of an object.
+
++ Request (application/json)
+
+        {
+          "complete": true
+        }
+
++ Response 204
+
+### Remove a Resource [DELETE]
+
++ Request (application/json)
+
++ Response 200
+
+# Data Structures
+
+## Object (object)
+
++ created_at (number) - The time this object was created
++ updated_at (number) - The time this object was last updated
