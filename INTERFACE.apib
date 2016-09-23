@@ -51,9 +51,10 @@ The `resource_name` you provide for all end-points is chosen by you. Posting dat
               }
             ]
 
-### Create a new Object [POST]
+### Creating new Objects [POST]
 
-You may create new objects using this action. It takes a JSON object containing the data you want to save.
+You may create new objects using this action. It takes a JSON object containing the data you want to save. You may also
+create more than one new object by posting an array of JSON objects.
 
 + Request (application/json)
 
@@ -74,10 +75,6 @@ You may create new objects using this action. It takes a JSON object containing 
               "text": "Learn about Regular Expressions",
               "complete": false
             }
-
-### Bulk create Objects [POST]
-
-You may create more than one new object by posting an array of JSON objects.
 
 + Request (application/json)
 
