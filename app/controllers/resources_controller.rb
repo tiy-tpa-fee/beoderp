@@ -1,3 +1,4 @@
+# Magic!
 class ResourcesController < ApplicationController
   before_action :define_scope
   before_action :set_resource, only: [:show, :update, :destroy]
@@ -18,13 +19,7 @@ class ResourcesController < ApplicationController
 
   # POST /resources
   def create
-    @resource = @scope.new(data: request.request_parameters)
-
-    if @resource.save
-      render json: @resource, status: :created, location: resource_url(@resource.name, @resource.id)
-    else
-      render json: @resource.errors, status: :unprocessable_entity
-    end
+    !params[:_json] ? create_resource : create_resources
   end
 
   # PATCH/PUT /resources/1
@@ -43,12 +38,30 @@ class ResourcesController < ApplicationController
 
   private
 
-    def define_scope
-      @scope = current_user.resources.by_name(params[:resource_name])
-    end
+  def define_scope
+    @scope = current_user.resources.by_name(params[:resource_name])
+  end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_resource
-      @resource = @scope.find(params[:id])
+  # Use callbacks to share common setup or constraints between actions.
+  def set_resource
+    @resource = @scope.find(params[:id])
+  end
+
+  # Create a single Resource
+  def create_resource
+    @resource = @scope.new(data: request.request_parameters)
+    if @resource.save
+      render json: @resource, status: :created, location: resource_url(@resource.name, @resource.id)
+    else
+      render json: @resource.errors, status: :unprocessable_entity
     end
+  end
+
+  # Bulk create Resources
+  def create_resources
+    @resources = @scope.create(params[:_json].map { |res| { data: res } })
+    render json: @resources, status: :created, location: resources_url
+  rescue
+    render nothing: true, status: :unprocessable_entity
+  end
 end
