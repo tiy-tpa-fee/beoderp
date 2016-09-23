@@ -3,7 +3,7 @@ HOST: https://beoderp.herokuapp.com
 
 # BEODerp
 
-BEODerp is a "back end on demand". It's simple API allows consumers to save, retrieve and update data as needed. 
+BEODerp is a "back end on demand". It's simple API allows consumers to save, retrieve and update data as needed.
 
 **FOR PROTOTYPE USE ONLY**
 
@@ -51,9 +51,9 @@ The `resource_name` you provide for all end-points is chosen by you. Posting dat
               }
             ]
 
-### Create a New Object [POST]
+### Create a new Object [POST]
 
-You may create new objects using this action. It takes a JSON structure containing the singular resource name data you want to save.
+You may create new objects using this action. It takes a JSON object containing the data you want to save.
 
 + Request (application/json)
 
@@ -64,7 +64,7 @@ You may create new objects using this action. It takes a JSON structure containi
 + Response 201 (application/json)
 
     + Headers
-    
+
             Location: /items/3
 
     + Body
@@ -74,6 +74,40 @@ You may create new objects using this action. It takes a JSON structure containi
               "text": "Learn about Regular Expressions",
               "complete": false
             }
+
+### Bulk create Objects [POST]
+
+You may create more than one new object by posting an array of JSON objects.
+
++ Request (application/json)
+
+            [
+              {
+                "text": "Learn about Regular Expressions"
+              },
+              {
+                "text": "Grok Redux"
+              }
+            ]
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: /items
+
+    + Body
+
+            [
+              {
+                "id": 3,
+                "text": "Learn about Regular Expressions",
+              },
+              {
+                "id": 4,
+                "text": "Grok Redux",
+              }
+            ]
 
 ## Singular Object [/{resource_name}/{id}{?access_token}]
 
